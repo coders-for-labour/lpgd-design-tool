@@ -1,0 +1,26 @@
+#svg-editor{
+  padding: 1em;
+  border: solid 1px lightslategray;
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+  width: auto;
+}
+
+#canvas{
+  width: 512px;
+  height: 256px;
+}
+
+#svg-image-view
+{
+  display: inline-block;
+}
+
+#svg-tools-view{
+  display: inline-block;
+}
+
+.svg-image-section{
+  padding: 5px;
+}
