@@ -9,5 +9,8 @@
         <option *ngFor="let f of fills" ng-selected="img.value == f" value="{{f}}">{{ f }}</option>
       </select>
     </div>
+    <div class="svg-image-save">
+      <button (click)="saveToPng()">Save To PNG</button>
+    </div>
   </div>
 </div>
