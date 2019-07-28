@@ -3,6 +3,7 @@ import * as $ from 'jquery';
 import { IMAGES } from "./image-data";
 import { FILLS } from "./image-data";
 import { ImageSection, ImageFile } from './image-file';
+import * as svg from 'save-svg-as-png';
 declare const SVG:any;
 
 @Component({
@@ -15,26 +16,38 @@ export class SvgEditorComponent implements OnInit {
 
   image: ImageFile;
   fills: string[] = FILLS;
+  svgDoc: any;
 
   constructor() { }
 
   ngOnInit() {
     if(this.isKnownImage(this.svgUrl)){
       this.image = this.getImage(this.svgUrl);
-      const draw = SVG("canvas");
+      this.svgDoc = SVG("canvas");
       var ctx = this;
       $.get(this.svgUrl, function(contents){
           var $tmp = $("svg", contents);
-          var i = draw.svg($tmp.html());
+          var i = ctx.svgDoc.svg($tmp.html());
 
           //Ran into some scaling problems - SVGs should omit width / height and provide only viewBox
-          i.viewbox($tmp.attr("viewBox"));
+          i.viewbox(ctx.getDimensions($tmp));
+          ctx.svgDoc = i;
           ctx.setDefaults();
       }, "xml");
     } else{
       console.log("Unknown image: " + this.svgUrl);
     }
     console.log(this.svgUrl);
+  }
+
+  getDimensions(loadedDoc){
+    if(loadedDoc.attr("viewBox")){
+      return loadedDoc.attr("viewBox");
+    } else{
+      return {
+        x: 0, y: 0, width: loadedDoc.attr("width"), height: loadedDoc.attr("height")
+      }
+    }
   }
 
   setDefaults(){
@@ -66,5 +79,9 @@ export class SvgEditorComponent implements OnInit {
         return s.id == section.id;
       })[0].value = section.value;
     }
+  }
+
+  saveToPng(){
+    svg.saveSvgAsPng(document.getElementById(this.svgDoc), "image.png", { scale: 0.5});
   }
 }
