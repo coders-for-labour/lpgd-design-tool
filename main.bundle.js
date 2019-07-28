@@ -39,18 +39,18 @@ module.exports = module.exports.toString();
 /***/ 151:
 /***/ (function(module, exports) {
 
-module.exports = "<h1>\n  {{title}}\n</h1>\n<app-svg-editor svgUrl='assets/svg/lpgd_logo.svg'></app-svg-editor>\n"
+module.exports = "<h1>\r\n  {{title}}\r\n</h1>\r\n<app-svg-editor svgUrl='assets/svg/LPGD_white.svg'></app-svg-editor>\r\n"
 
 /***/ }),
 
 /***/ 152:
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"svg-editor\">\n  <div id=\"svg-image-view\">\n    <div id=\"canvas\"></div>\n  </div>\n  <div id=\"svg-tools-view\">\n    <div *ngFor=\"let img of image.sections\" class=\"svg-image-section\">\n      <label for=\"{{ img.id }}\">{{ img.id }}</label>\n      <select id=\"{{ img.id }}\" (ngModelChange)=\"setFill(img, $event)\" [(ngModel)]=\"img.value\">\n        <option *ngFor=\"let f of fills\" ng-selected=\"img.value == f\" value=\"{{f}}\">{{ f }}</option>\n      </select>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div id=\"svg-editor\">\r\n  <div id=\"svg-image-view\">\r\n    <div id=\"canvas\"></div>\r\n  </div>\r\n  <div id=\"svg-tools-view\">\r\n    <div *ngFor=\"let img of image.sections\" class=\"svg-image-section\">\r\n      <label for=\"{{ img.id }}\">{{ img.id }}</label>\r\n      <select id=\"{{ img.id }}\" (ngModelChange)=\"setFill(img, $event)\" [(ngModel)]=\"img.value\">\r\n        <option *ngFor=\"let f of fills\" ng-selected=\"img.value == f\" value=\"{{f}}\">{{ f }}</option>\r\n      </select>\r\n    </div>\r\n    <div class=\"svg-image-save\">\r\n      <button (click)=\"saveToPng()\">Save To PNG</button>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
-/***/ 182:
+/***/ 183:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(80);
@@ -73,10 +73,24 @@ var IMAGES = [
             { id: "G", option: "fill", value: "blue" },
             { id: "D", option: "fill", value: "yellow" }
         ]
+    },
+    {
+        name: "lpgd red", url: "assets/svg/LPGD_red.svg", sections: [
+            { id: "background", option: "fill", value: "red" },
+            { id: "text", option: "fill", value: "white" },
+            { id: "logo", option: "fill", value: "white" }
+        ]
+    },
+    {
+        name: "lpgd white", url: "assets/svg/LPGD_white.svg", sections: [
+            { id: "background", option: "fill", value: "white" },
+            { id: "text", option: "fill", value: "red" },
+            { id: "logo", option: "fill", value: "red" }
+        ]
     }
 ];
 var FILLS = [
-    "red", "green", "blue", "yellow"
+    "red", "green", "blue", "yellow", "white"
 ];
 //# sourceMappingURL=image-data.js.map
 
@@ -204,6 +218,8 @@ AppModule = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(148);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_jquery__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__image_data__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_save_svg_as_png__ = __webpack_require__(180);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_save_svg_as_png___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_save_svg_as_png__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SvgEditorComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -218,6 +234,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var SvgEditorComponent = (function () {
     function SvgEditorComponent() {
         this.fills = __WEBPACK_IMPORTED_MODULE_2__image_data__["a" /* FILLS */];
@@ -225,13 +242,14 @@ var SvgEditorComponent = (function () {
     SvgEditorComponent.prototype.ngOnInit = function () {
         if (this.isKnownImage(this.svgUrl)) {
             this.image = this.getImage(this.svgUrl);
-            var draw_1 = SVG("canvas");
+            this.svgDoc = SVG("canvas");
             var ctx = this;
             __WEBPACK_IMPORTED_MODULE_1_jquery__["get"](this.svgUrl, function (contents) {
                 var $tmp = __WEBPACK_IMPORTED_MODULE_1_jquery__("svg", contents);
-                var i = draw_1.svg($tmp.html());
+                var i = ctx.svgDoc.svg($tmp.html());
                 //Ran into some scaling problems - SVGs should omit width / height and provide only viewBox
-                i.viewbox($tmp.attr("viewBox"));
+                i.viewbox(ctx.getDimensions($tmp));
+                ctx.svgDoc = i;
                 ctx.setDefaults();
             }, "xml");
         }
@@ -239,6 +257,16 @@ var SvgEditorComponent = (function () {
             console.log("Unknown image: " + this.svgUrl);
         }
         console.log(this.svgUrl);
+    };
+    SvgEditorComponent.prototype.getDimensions = function (loadedDoc) {
+        if (loadedDoc.attr("viewBox")) {
+            return loadedDoc.attr("viewBox");
+        }
+        else {
+            return {
+                x: 0, y: 0, width: loadedDoc.attr("width"), height: loadedDoc.attr("height")
+            };
+        }
     };
     SvgEditorComponent.prototype.setDefaults = function () {
         for (var i = 0; i < this.image.sections.length; i++) {
@@ -265,6 +293,9 @@ var SvgEditorComponent = (function () {
                 return s.id == section.id;
             })[0].value = section.value;
         }
+    };
+    SvgEditorComponent.prototype.saveToPng = function () {
+        __WEBPACK_IMPORTED_MODULE_3_save_svg_as_png__["saveSvgAsPng"](document.getElementById(this.svgDoc), "image.png", { scale: 0.5 });
     };
     return SvgEditorComponent;
 }());
@@ -297,5 +328,5 @@ var environment = {
 
 /***/ })
 
-},[182]);
+},[183]);
 //# sourceMappingURL=main.bundle.js.map
