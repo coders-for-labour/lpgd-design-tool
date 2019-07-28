@@ -30,7 +30,7 @@ export class SvgEditorComponent implements OnInit {
           var i = ctx.svgDoc.svg($tmp.html());
 
           //Ran into some scaling problems - SVGs should omit width / height and provide only viewBox
-          i.viewbox($tmp.attr("viewBox"));
+          i.viewbox(ctx.getDimensions($tmp));
           ctx.svgDoc = i;
           ctx.setDefaults();
       }, "xml");
@@ -38,6 +38,16 @@ export class SvgEditorComponent implements OnInit {
       console.log("Unknown image: " + this.svgUrl);
     }
     console.log(this.svgUrl);
+  }
+
+  getDimensions(loadedDoc){
+    if(loadedDoc.attr("viewBox")){
+      return loadedDoc.attr("viewBox");
+    } else{
+      return {
+        x: 0, y: 0, width: loadedDoc.attr("width"), height: loadedDoc.attr("height")
+      }
+    }
   }
 
   setDefaults(){
