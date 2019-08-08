@@ -8,7 +8,7 @@ exports = module.exports = __webpack_require__(30)(false);
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,800&display=swap);", ""]);
 
 // module
-exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\n", ""]);
+exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\nbody {\n  font-family: \"Open Sans\"; }\n", ""]);
 
 // exports
 
