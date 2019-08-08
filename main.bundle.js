@@ -26,7 +26,7 @@ exports = module.exports = __webpack_require__(30)(false);
 
 
 // module
-exports.push([module.i, "#svg-editor{\r\n  padding: 1em;\r\n  border: solid 1px lightslategray;\r\n  display: inline-block;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n  width: auto;\r\n}\r\n\r\n#canvas{\r\n  width: 512px;\r\n  height: 256px;\r\n}\r\n\r\n#svg-image-view\r\n{\r\n  display: inline-block;\r\n}\r\n\r\n#svg-tools-view{\r\n  display: inline-block;\r\n}\r\n\r\n.svg-image-section{\r\n  padding: 5px;\r\n}\r\n", ""]);
+exports.push([module.i, "#svg-editor {\n  padding: 1em;\n  border: solid 1px lightslategray;\n  display: inline-block;\n  margin-left: auto;\n  margin-right: auto;\n  width: auto; }\n\n#canvas {\n  width: 512px;\n  height: 256px; }\n\n#svg-image-view {\n  display: inline-block; }\n\n#svg-tools-view {\n  display: inline-block; }\n\n.svg-image-section {\n  padding: 5px; }\n", ""]);
 
 // exports
 
