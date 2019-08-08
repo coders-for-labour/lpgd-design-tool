@@ -9,7 +9,7 @@ declare const SVG:any;
 @Component({
   selector: 'app-svg-editor',
   templateUrl: './svg-editor.component.html',
-  styleUrls: ['./svg-editor.component.css']
+  styleUrls: ['./svg-editor.component.scss']
 })
 export class SvgEditorComponent implements OnInit {
   @Input() svgUrl;
