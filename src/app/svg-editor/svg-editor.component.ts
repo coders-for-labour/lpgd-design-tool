@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import * as $ from 'jquery';
 import { IMAGES } from "./image-data";
 import { FILLS } from "./image-data";
@@ -11,7 +11,7 @@ declare const SVG:any;
   templateUrl: './svg-editor.component.html',
   styleUrls: ['./svg-editor.component.css']
 })
-export class SvgEditorComponent implements OnInit {
+export class SvgEditorComponent implements OnInit, AfterViewInit {
   @Input() svgUrl;
 
   image: ImageFile;
@@ -23,9 +23,17 @@ export class SvgEditorComponent implements OnInit {
   ngOnInit() {
     if(this.isKnownImage(this.svgUrl)){
       this.image = this.getImage(this.svgUrl);
-      this.svgDoc = SVG("canvas");
-      var ctx = this;
-      $.get(this.svgUrl, function(contents){
+    } else{
+      console.log("Unknown image: " + this.svgUrl);
+    }
+    console.log(this.svgUrl);
+  }
+
+  ngAfterViewInit(){
+      if(this.image){
+        this.svgDoc = SVG(document.getElementById("canvas_" + this.image.name));
+        var ctx = this;
+        $.get(this.svgUrl, function(contents){
           var $tmp = $("svg", contents);
           var i = ctx.svgDoc.svg($tmp.html());
 
@@ -34,10 +42,7 @@ export class SvgEditorComponent implements OnInit {
           ctx.svgDoc = i;
           ctx.setDefaults();
       }, "xml");
-    } else{
-      console.log("Unknown image: " + this.svgUrl);
-    }
-    console.log(this.svgUrl);
+      }
   }
 
   getDimensions(loadedDoc){
