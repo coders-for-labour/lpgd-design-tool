@@ -1,4 +1,11 @@
 <svg width="1920" height="1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+    <![CDATA[
+        @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,800&display=swap');
+      ]]>
+    </style>
+  </defs>
   <g fill="none" fill-rule="evenodd">
     <path id="background" fill="#E62336" d="M0 0h1920v1080H0z"/>
     <text id="text" font-family="OpenSans-Regular, Open Sans" font-size="170" fill="#FFF">
