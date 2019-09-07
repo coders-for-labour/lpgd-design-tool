@@ -9,9 +9,17 @@ import { ImageSection, ImageFile } from '../svg-editor/image-file';
 })
 export class GalleryComponent implements OnInit {
   images: any[] = IMAGES;
+
+  selected: any;
   constructor() { }
 
   ngOnInit() {
+    this.selected = this.images[0];
+  }
+
+  selectImage(element: any, image : any){
+    this.selected = image;
+    console.log(this.selected);
   }
 
 }

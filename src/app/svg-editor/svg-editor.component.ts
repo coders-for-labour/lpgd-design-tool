@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Injectable, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Injectable, AfterViewInit } from '@angular/core';
 import * as $ from 'jquery';
 import { IMAGES } from "./image-data";
 import { FILLS } from "./image-data";
@@ -7,6 +7,7 @@ import * as svg from 'save-svg-as-png';
 import css from 'css';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ignoreElements } from 'rxjs/operators';
 
 
 declare const SVG:any;
@@ -17,38 +18,68 @@ declare const SVG:any;
   styleUrls: ['./svg-editor.component.scss']
 })
 @Injectable()
-export class SvgEditorComponent implements OnInit, AfterViewInit {
-  @Input() svgUrl;
+export class SvgEditorComponent implements OnInit, OnChanges, AfterViewInit {
+  @Input() selectedImage: ImageFile;
 
-  image: ImageFile;
+  svgUrl : string;
   fills: string[] = FILLS;
   svgDoc: any;
+  bound: boolean = false;
+  canvasId: string;
 
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
+    //this.initialiseImage();
+  }
+
+  initialiseImage(){
+    this.svgUrl = this.selectedImage.url;
     if(this.isKnownImage(this.svgUrl)){
-      this.image = this.getImage(this.svgUrl);
+      this.selectedImage = this.getImage(this.svgUrl);
+      this.canvasId = "canvas_svg";
     } else{
       console.log("Unknown image: " + this.svgUrl);
     }
     console.log(this.svgUrl);
   }
 
-  ngAfterViewInit(){
-      if(this.image){
-        this.svgDoc = SVG(document.getElementById("canvas_" + this.image.name));
-        var ctx = this;
-        $.get(this.svgUrl, function(contents){
-          var $tmp = $("svg", contents);
-          var i = ctx.svgDoc.svg($tmp.html());
+  ngOnChanges(){
+    console.log("Changes detected.");
+    this.destroyImage();
+    this.initialiseImage();
+    if(this.bound){
+      this.bindImage();
+    }
+  }
 
-          //Ran into some scaling problems - SVGs should omit width / height and provide only viewBox
-          i.viewbox(ctx.getDimensions($tmp));
-          ctx.svgDoc = i;
-          ctx.setDefaults();
-      }, "xml");
-      }
+  destroyImage(){
+    $(`#${this.canvasId}`).empty();
+    if(this.svgDoc){
+      this.svgDoc.clear();
+    }
+  }
+
+  bindImage(){
+    if(this.selectedImage){
+      this.svgDoc = SVG(this.canvasId);
+      var ctx = this;
+      $.get(this.svgUrl, function(contents){
+        var $tmp = $("svg", contents);
+        var i = ctx.svgDoc.svg($tmp.html());
+
+        //Ran into some scaling problems - SVGs should omit width / height and provide only viewBox
+        i.viewbox(ctx.getDimensions($tmp));
+        ctx.svgDoc = i;
+        ctx.setDefaults();
+    }, "xml");
+    }
+    this.bound = true;
+  }
+
+  ngAfterViewInit(){
+    console.log("View initialised");
+    this.bindImage();
   }
 
   getDimensions(loadedDoc){
@@ -62,8 +93,8 @@ export class SvgEditorComponent implements OnInit, AfterViewInit {
   }
 
   setDefaults(){
-    for(var i = 0; i < this.image.sections.length; i++){
-      this.setFill(this.image.sections[i], this.image.sections[i].value);
+    for(var i = 0; i < this.selectedImage.sections.length; i++){
+      this.setFill(this.selectedImage.sections[i], this.selectedImage.sections[i].value);
     }
   }
 
@@ -80,13 +111,13 @@ export class SvgEditorComponent implements OnInit, AfterViewInit {
   }
 
   setFill(section: ImageSection, colour: string){
-    if(this.image.sections.find(function(s){
+    if(this.selectedImage.sections.find(function(s){
         return s.id == section.id;
     })){
       section.value = colour;
       SVG.get(section.id).fill(section.value);
 
-      this.image.sections.filter(function(s){
+      this.selectedImage.sections.filter(function(s){
         return s.id == section.id;
       })[0].value = section.value;
     }
