@@ -6,11 +6,13 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { SvgEditorComponent } from './svg-editor/svg-editor.component';
+import { GalleryComponent } from './gallery/gallery.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SvgEditorComponent
+    SvgEditorComponent,
+    GalleryComponent
   ],
   imports: [
     BrowserModule,
