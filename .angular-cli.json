@@ -19,12 +19,11 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+        "styles.scss"
       ],
       "scripts": [
         "../node_modules/svg.js/dist/svg.min.js",
         "../node_modules/jquery/dist/jquery.min.js"
-
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
@@ -55,7 +54,8 @@
     }
   },
   "defaults": {
-    "styleExt": "css",
-    "component": {}
+    "styleExt": "scss",
+    "component": {
+    }
   }
 }
