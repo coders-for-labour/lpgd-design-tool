@@ -1,0 +1,4 @@
+<div *ngFor="let image of images; let i = index">
+  <p (click)="selectImage($event, image)">{{ image.name }}</p>
+</div>
+<app-svg-editor [selectedImage]="selected"></app-svg-editor>
