@@ -1,4 +1,12 @@
-<div *ngFor="let image of images; let i = index">
-  <p (click)="selectImage($event, image)">{{ image.name }}</p>
-</div>
 <app-svg-editor [selectedImage]="selected"></app-svg-editor>
+
+<mat-grid-list cols="3" rowHeight="250px">
+  <mat-grid-tile (click)="selectImage($event, image)" *ngFor="let image of images; let i = index">
+    <div class="gallery-img-tile" fxFlex="100">
+      <img class="gallery-img" src="{{ image.url }}"/>
+    </div>
+    <mat-grid-tile-footer>
+        {{ image.name }}
+      </mat-grid-tile-footer>
+  </mat-grid-tile>
+</mat-grid-list>
