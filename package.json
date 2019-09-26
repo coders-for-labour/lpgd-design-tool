@@ -12,18 +12,18 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/common": "^4.0.0",
-    "@angular/compiler": "^4.0.0",
-    "@angular/core": "^4.0.0",
-    "@angular/forms": "^4.0.0",
-    "@angular/platform-browser": "^4.0.0",
-    "@angular/platform-browser-dynamic": "^4.0.0",
-    "@angular/router": "^4.0.0",
+    "@angular/common": "^8.2.8",
+    "@angular/compiler": "^8.2.8",
+    "@angular/core": "^8.2.8",
+    "@angular/forms": "^8.2.8",
+    "@angular/platform-browser": "^8.2.8",
+    "@angular/platform-browser-dynamic": "^8.2.8",
+    "@angular/router": "^8.2.8",
     "core-js": "^2.4.1",
     "css": "^2.2.4",
     "jquery": "^3.4.1",
-    "rxjs": "^5.5.12",
-    "rxjs-compat": "^6.5.3",
+    "rxjs": "^6.5.3",
+    "rxjs-compat": "^6.0.0-rc.0",
     "save-svg-as-png": "^1.4.14",
     "svg.js": "^2.7.1",
     "tslib": "^1.10.0",
@@ -32,7 +32,7 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.6",
     "@angular/cli": "^8.3.6",
-    "@angular/compiler-cli": "^4.0.0",
+    "@angular/compiler-cli": "^8.2.8",
     "@types/jasmine": "2.5.38",
     "@types/node": "~6.0.60",
     "codelyzer": "^5.0.1",
@@ -47,6 +47,6 @@
     "protractor": "^6.0.0",
     "ts-node": "~2.0.0",
     "tslint": "~4.5.0",
-    "typescript": "~2.2.0"
+    "typescript": "~3.5.3"
   }
 }
