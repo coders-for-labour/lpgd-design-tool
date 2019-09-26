@@ -6,7 +6,7 @@ import { ImageSection, ImageFile } from './image-file';
 import * as svg from 'save-svg-as-png';
 import css from 'css';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { ignoreElements } from 'rxjs/operators';
 
 
@@ -171,7 +171,7 @@ export class SvgEditorComponent implements OnInit, OnChanges, AfterViewInit {
       reqs.push(this.http.get(u, {responseType: 'text'}));
     });
 
-    Observable.forkJoin(reqs).subscribe({
+    forkJoin(reqs).subscribe({
       next: results => {
         results.forEach(r => {
             var p = css.parse(r);
