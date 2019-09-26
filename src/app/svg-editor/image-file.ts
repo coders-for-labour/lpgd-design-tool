@@ -1,6 +1,11 @@
 export class ImageFile{
   name: string;
   url: string;
+  variants: ImageVariant[];
+}
+
+export class ImageVariant{
+  name: string;
   sections: ImageSection[];
 }
 

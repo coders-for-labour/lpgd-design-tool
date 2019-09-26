@@ -2,7 +2,7 @@ import { Component, OnInit, OnChanges, Input, Injectable, AfterViewInit } from '
 import * as $ from 'jquery';
 import { IMAGES } from "./image-data";
 import { FILLS } from "./image-data";
-import { ImageSection, ImageFile } from './image-file';
+import { ImageSection, ImageFile, ImageVariant } from './image-file';
 import * as svg from 'save-svg-as-png';
 import css from 'css';
 import { HttpClient } from '@angular/common/http';
@@ -20,6 +20,8 @@ declare const SVG:any;
 @Injectable()
 export class SvgEditorComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() selectedImage: ImageFile;
+
+  selectedVariant: string;
 
   svgUrl : string;
   fills: string[] = FILLS;
@@ -93,9 +95,8 @@ export class SvgEditorComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   setDefaults(){
-    for(var i = 0; i < this.selectedImage.sections.length; i++){
-      this.setFill(this.selectedImage.sections[i], this.selectedImage.sections[i].value);
-    }
+    this.selectedVariant = this.selectedImage.variants[0].name;
+    this.setVariant(this.getVariant(this.selectedVariant));
   }
 
   isKnownImage(imageURL: string){
@@ -110,18 +111,38 @@ export class SvgEditorComponent implements OnInit, OnChanges, AfterViewInit {
     })[0];
   }
 
-  setFill(section: ImageSection, colour: string){
-    if(this.selectedImage.sections.find(function(s){
-        return s.id == section.id;
-    })){
-      section.value = colour;
-      SVG.get(section.id).fill(section.value);
+  getVariant(variantName: string){
+    return this.selectedImage.variants.filter(function(v){
+      return v.name === variantName;
+    })[0];
+  }
 
-      this.selectedImage.sections.filter(function(s){
-        return s.id == section.id;
-      })[0].value = section.value;
+  onVariantChange(){
+    if(this.selectedVariant){
+      this.setVariant(this.getVariant(this.selectedVariant));
     }
   }
+
+  setVariant(variant: ImageVariant){
+    if(variant){
+      for(var i = 0; i < variant.sections.length; i++){
+        SVG.get(variant.sections[i].id).fill(variant.sections[i].value);
+      }
+    }
+  }
+
+  // setFill(section: ImageSection, colour: string){
+  //   if(this.selectedImage.sections.find(function(s){
+  //       return s.id == section.id;
+  //   })){
+  //     section.value = colour;
+  //     SVG.get(section.id).fill(section.value);
+
+  //     this.selectedImage.sections.filter(function(s){
+  //       return s.id == section.id;
+  //     })[0].value = section.value;
+  //   }
+  // }
 
   urlRegex: RegExp = /(?<=url\('?)(.*?)(?='?\))/g
   formatRegex: RegExp = /(?<=format\(')(.*?)(?='\))/g

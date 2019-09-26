@@ -1,16 +1,27 @@
-<div id="svg-editor">
-  <div id="svg-image-view">
-    <div id="canvas_svg"></div>
-  </div>
-  <div id="svg-tools-view">
-    <div *ngFor="let img of selectedImage.sections" class="svg-image-section">
-      <label for="{{ img.id }}">{{ img.id }}</label>
-      <select id="{{ img.id }}" (ngModelChange)="setFill(img, $event)" [(ngModel)]="img.value">
-        <option *ngFor="let f of fills" ng-selected="img.value == f" value="{{f}}">{{ f }}</option>
-      </select>
-    </div>
-    <div class="svg-image-save">
-      <button (click)="saveToPng()">Save To PNG</button>
-    </div>
-  </div>
+<div fxLayout="row" fxLayoutAlign="center">
+<div fxLayout="column" fxFlex="40" fxFlex.xs="80" fxFlex.sm="80" fxFlex.md="40" fxFlex.lg="40">
+  <mat-card id="svg-editor">
+    <mat-card-title>{{ selectedImage.name }}</mat-card-title>
+    <mat-card-content>
+        <div>
+            <div id="svg-image-view">
+              <div id="canvas_svg"></div>
+            </div>
+            <div id="svg-tools-view">
+              <mat-form-field>
+                <mat-label>Select Style</mat-label>
+                <mat-select [(ngModel)]="selectedVariant" (ngModelChange)="onVariantChange()">
+                  <mat-option *ngFor="let v of selectedImage.variants" [value]="v.name">{{v.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            </div>
+          </div>
+    </mat-card-content>
+    <mat-card-footer>
+      <div class="svg-image-save">
+        <button mat-raised-button color="primary" (click)="saveToPng()">Save To PNG</button>
+      </div>
+    </mat-card-footer>
+  </mat-card>
+</div>
 </div>
