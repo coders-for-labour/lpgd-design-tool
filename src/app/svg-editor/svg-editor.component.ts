@@ -131,28 +131,15 @@ export class SvgEditorComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  // setFill(section: ImageSection, colour: string){
-  //   if(this.selectedImage.sections.find(function(s){
-  //       return s.id == section.id;
-  //   })){
-  //     section.value = colour;
-  //     SVG.get(section.id).fill(section.value);
-
-  //     this.selectedImage.sections.filter(function(s){
-  //       return s.id == section.id;
-  //     })[0].value = section.value;
-  //   }
-  // }
-
-  urlRegex: RegExp = /(?<=url\('?)(.*?)(?='?\))/g
-  formatRegex: RegExp = /(?<=format\(')(.*?)(?='\))/g
+  urlRegex: RegExp = /url\(\W?(?<url>.*?)\W?\)/
+  formatRegex: RegExp = /format\(\W?(?<fmt>.*?)\W?\)/
 
   getRemoteSrc(fontSrcString: string){
-    return fontSrcString.match(this.urlRegex)[0];
+    return this.urlRegex.exec(fontSrcString)['groups'].url;
   }
 
   getFormat(fontSrcString: string){
-    return fontSrcString.match(this.formatRegex)[0];
+    return this.formatRegex.exec(fontSrcString)['groups'].fmt
   }
 
   getText(fontObj: any){
