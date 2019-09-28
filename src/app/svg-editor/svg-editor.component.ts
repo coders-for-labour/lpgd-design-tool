@@ -142,14 +142,24 @@ export class SvgEditorComponent implements OnInit, OnChanges, AfterViewInit {
     return this.formatRegex.exec(fontSrcString)['groups'].fmt
   }
 
+  getDeclarationValue(declarationsArray: any, propertyName: string){
+    var filtered = declarationsArray.filter(x => x.property == propertyName);
+    if(filtered != undefined && filtered.length > 0){
+      return filtered[0].value;
+    } else{
+      return "";
+    }
+  }
+
   getText(fontObj: any){
-    var family = fontObj.declarations.filter(x => x.property == "font-family")[0].value;
-    var url = this.getRemoteSrc(fontObj.declarations.filter(x => x.property == "src")[0].value);
+
+    var family = this.getDeclarationValue(fontObj.declarations, "font-family");
+    var url = this.getRemoteSrc(this.getDeclarationValue(fontObj.declarations, "src"));
     //var format = this.getFormat(fontObj.declarations.filter(x => x.property == "src")[0].value);
-    var style = fontObj.declarations.filter(x => x.property == "font-style")[0].value;
-    var weight = fontObj.declarations.filter(x => x.property == "font-weight")[0].value;
-    var display = fontObj.declarations.filter(x => x.property == "font-display")[0].value;
-    var unicode = fontObj.declarations.filter(x => x.property == "unicode-range")[0].value;
+    var style = this.getDeclarationValue(fontObj.declarations, "font-style");
+    var weight = this.getDeclarationValue(fontObj.declarations, "font-weight");
+    var display = this.getDeclarationValue(fontObj.declarations, "font-display");
+    var unicode = this.getDeclarationValue(fontObj.declarations, "unicode-range");
       return `@font-face{\
         font-family: ${family};\
         src: url(${url});\
