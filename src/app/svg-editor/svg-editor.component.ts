@@ -181,30 +181,6 @@ export class SvgEditorComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   saveToPng(){
-    this.getImports();
-    var urls = this.getImports();
-    var fonts = [];
-    var reqs = [];
-    urls.forEach(u => {
-      reqs.push(this.http.get(u, {responseType: 'text'}));
-    });
-
-    forkJoin(reqs).subscribe({
-      next: results => {
-        results.forEach(r => {
-            var p = css.parse(r);
-            p.stylesheet.rules.filter(el => el.type == "font-face").forEach(element => {
-              fonts.push({
-                  text: this.getText(element),
-                  url: this.getRemoteSrc(element.declarations.filter(x => x.property == "src")[0].value),
-                  format: this.getFormat(element.declarations.filter(x => x.property == "src")[0].value)
-              });
-            });
-        });
-      },
-      complete: () => {
-        svg.saveSvgAsPng(document.getElementById(this.svgDoc), "image.png", { scale: 0.5, fonts: fonts });
-      }
-    });
+    svg.saveSvgAsPng(document.getElementById(this.svgDoc), "image.png", { scale: 0.5});
   }
 }
