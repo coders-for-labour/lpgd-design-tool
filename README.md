@@ -1,6 +1,6 @@
-# LabourDesignTool
+# Labour Design Tool
+A tool to allow users to select and modify LPGD images.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.1.
 
 ## Development server
 
