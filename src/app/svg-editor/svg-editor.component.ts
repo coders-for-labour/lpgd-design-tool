@@ -131,15 +131,15 @@ export class SvgEditorComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  urlRegex: RegExp = /url\(\W?(?<url>.*?)\W?\)/
-  formatRegex: RegExp = /format\(\W?(?<fmt>.*?)\W?\)/
+  urlRegex: RegExp = /url\(\W?(.*?)\W?\)/
+  formatRegex: RegExp = /format\(\W?(.*?)\W?\)/
 
   getRemoteSrc(fontSrcString: string){
-    return this.urlRegex.exec(fontSrcString)['groups'].url;
+    return this.urlRegex.exec(fontSrcString)['groups'][0];
   }
 
   getFormat(fontSrcString: string){
-    return this.formatRegex.exec(fontSrcString)['groups'].fmt
+    return this.formatRegex.exec(fontSrcString)['groups'][0]
   }
 
   getDeclarationValue(declarationsArray: any, propertyName: string){
