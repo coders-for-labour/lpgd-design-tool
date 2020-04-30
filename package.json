@@ -28,7 +28,7 @@
     "css": "^2.2.4",
     "fs": "0.0.1-security",
     "hammerjs": "^2.0.8",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "ngh": "^0.2.12",
     "rxjs": "^6.5.3",
     "rxjs-compat": "^6.0.0-rc.0",
